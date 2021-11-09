@@ -1,0 +1,117 @@
+{% extends 'main.html' %}
+
+{% block contenu %}
+
+<div class="contenu">Sample prep</div>
+
+{% if user.is_superuser %}
+<br>
+<div class="col-md">
+    <div class="card card-body">
+        <a class="btn btn-outline-primary  btn-sm btn-block" href="{% url 'ajouter_sample_prep' %}">Add sample prep</a>
+    </div>
+</div>
+{% endif %}
+<br>
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+
+            <form method="get">
+                {{myFilter.form}}
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button style="float:right;" class="btn btn-outline-primary" type="submit" value="Export" name="Export">
+                    Export
+                </button>
+                {% if user.is_superuser %}
+
+
+                <a style="float:right; position: relative; left: -10%;" class="btn btn-primary"
+                   href="{% url 'uploadsample_prep' %}"> Import </a>
+                {% endif %}
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>Sample</th>
+                    <th>Sample description</th>
+                    <th>GifA number</th>
+                    <th>Sequence</th>
+                    <th>Sequence description</th>
+                    <th>Prep warning</th>
+                    <th>Comment</th>
+                       {% if user.is_superuser %}
+                    <th> Edit</th>
+                    <th>Delete</th>
+                     {% endif %}
+                </tr>
+                {% for sample_prep in samples_prep %}
+                <tr>
+                    <td>{{sample_prep.sample}}</td>
+                    <td>{{sample_prep.sample.user_sample_description}}</td>
+                    <td>{{sample_prep.GifA_prep}}</td>
+                    <td>{{sample_prep.sequence}}</td>
+                    <td>{{sample_prep.sequence.description}}</td>
+                    <td>{{sample_prep.prep_warning}}</td>
+                    <td>{{sample_prep.comment}}</td>
+                    {% if user.is_superuser %}
+                    <td><a class='btn btn-sm btn-info' href="{% url 'modifier_sample_prep' sample_prep.id %}"> edit </a>
+                    <td>
+                        <form action="{% url 'supprimer_sample_prep' sample_prep.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete
+                            </button>
+                        </form>
+                    </td>
+                    {% endif%}
+                </tr>
+                {% endfor%}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<style>
+
+.contenu {
+   width:1000px;
+   background: #008000;
+   margin:auto;
+   margin-top: 1em;
+   text-align: center;
+   color : white;
+}
+
+
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: .8rem;
+}
+
+
+
+</style>
+
+
+{% endblock %}

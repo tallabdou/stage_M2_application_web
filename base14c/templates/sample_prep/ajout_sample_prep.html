@@ -1,0 +1,67 @@
+{% extends 'main.html' %}
+
+
+{% block contenu %}
+
+
+<div class="contenu">Sample prep</div>
+
+
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+            <form method="get">
+                <a style="float:right; position: relative; left: -10%;" class="btn btn-primary" href="{% url 'last_sample_prep' %}"> Last declination </a>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<div class="container">
+    <table class="table table-sm">
+        <div class="col">
+
+
+            <form action="" method="post">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% csrf_token %}
+                {{ form.as_table}}
+                <th><input type="submit" class="btn btn-primary mb-2" style="float: right;" name="Save"></th>
+            </form>
+
+        </div>
+
+    </table>
+
+</div>
+</div>
+
+
+
+
+
+
+
+<style>
+.contenu {
+   width:1000px;
+   background: #008000;
+   margin:auto;
+   margin-top: 1em;
+   text-align: center;
+   color : white;
+}
+
+
+</style>
+{% endblock %}

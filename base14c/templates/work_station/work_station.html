@@ -1,0 +1,104 @@
+{% extends 'main.html' %}
+
+{% block contenu %}
+
+<div class="contenu">Work station</div>
+
+{% if user.is_superuser %}
+<br>
+<div class="col-md">
+    <div class="card card-body">
+        <a class="btn btn-outline-primary  btn-sm btn-block" href="{% url 'ajouter_work_station' %}">Add work station</a>
+    </div>
+</div>
+{% endif %}
+<br>
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+
+            <form method="get">
+                {{myFilter.form}}
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button style="float:right;" class="btn btn-outline-primary" type="submit" value="Export" name="Export">
+                    Export
+                </button>
+  {% if user.is_superuser %}
+                <a style="float:right; position: relative; left: -10%;" class="btn btn-primary" href="{% url 'uploadwork_station' %}"> Import </a>
+                  {% endif %}
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>Work bench ID</th>
+                    <th>Work bench description</th>
+                    <th>Localisation</th>
+                      {% if user.is_superuser %}
+                    <th> Edit</th>
+                    <th>Delete</th>
+                  {% endif %}
+                </tr>
+                {% for work_station in work_stations %}
+                <tr>
+                    <td>{{work_station.work_bench_ID}}</td>
+                    <td>{{work_station.work_bench_description}}</td>
+                    <td>{{work_station.localisation}}</td>
+                    {% if user.is_superuser %}
+                    <td><a class='btn btn-sm btn-info' href="{% url 'modifier_work_station' work_station.work_bench_ID %}"> edit </a>
+                    <td>
+                        <form action="{% url 'supprimer_work_station' work_station.work_bench_ID %}" method="post">
+                          {% csrf_token %}
+                          <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+                    {% endif%}
+                </tr>
+                {% endfor%}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+
+.contenu {
+   width:1000px;
+   background: #008000;
+   margin:auto;
+   margin-top: 1em;
+   text-align: center;
+   color : white;
+}
+
+
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: .8rem;
+}
+
+
+</style>
+
+
+{% endblock %}

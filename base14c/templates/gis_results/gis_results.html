@@ -1,0 +1,106 @@
+{% extends 'main.html' %}
+
+{% block contenu %}
+
+<div class="contenu">Gis results</div>
+
+{% if user.is_superuser %}
+<br>
+<div class="col-md">
+    <div class="card card-body">
+        <a class="btn btn-outline-primary  btn-sm btn-block" href="{% url 'ajouter_gis_results' %}">Add gis results</a>
+    </div>
+</div>
+{% endif %}
+<br>
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+
+            <form method="get">
+                {{myFilter.form}}
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button style="float:right;" class="btn btn-outline-primary" type="submit" value="Export" name="Export">
+                    Export
+                </button>
+  {% if user.is_superuser %}
+                <a style="float:right; position: relative; left: -10%;" class="btn btn-primary" href="{% url 'uploadgis_results' %}"> Import </a>
+                  {% endif %}
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>Echo n°</th>
+                    <th>GifA nr</th>
+                    <th>Target comment</th>
+                    <th>F14C</th>
+                      {% if user.is_superuser %}
+                    <th> Edit</th>
+                    <th>Delete</th>
+                  {% endif %}
+                </tr>
+                {% for gis_results in gis_resultss %}
+                <tr>
+                    <td>{{gis_results.Echo}}</td>
+                    <td>{{gis_results.GifA_nr}}</td>
+                    <td>{{gis_results.target_comment}}</td>
+                    <td>{{gis_results.F14C}}</td>
+                    {% if user.is_superuser %}
+                    <td><a class='btn btn-sm btn-info' href="{% url 'modifier_gis_results' gis_results.Echo %}"> edit </a>
+                    <td>
+                        <form action="{% url 'supprimer_gis_results' gis_results.Echo %}" method="post">
+                          {% csrf_token %}
+                          <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+                    {% endif%}
+                </tr>
+                {% endfor%}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+
+.contenu {
+   width:1000px;
+   background: #008000;
+   margin:auto;
+   margin-top: 1em;
+   text-align: center;
+   color : white;
+}
+
+
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: .8rem;
+}
+
+
+</style>
+
+
+{% endblock %}

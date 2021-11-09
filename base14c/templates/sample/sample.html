@@ -1,0 +1,168 @@
+{% extends 'main.html' %}
+
+{% block contenu %}
+
+<div class="contenu">Sample</div>
+{% if user.is_superuser %}
+<br>
+<div class="col-md">
+    <div class="card card-body">
+        <a class="btn btn-outline-primary  btn-sm btn-block" href="{% url 'ajouter_sample' %}">Add sample</a>
+    </div>
+</div>
+{% endif %}
+
+
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+
+        <form method="get">
+            <TABLE width=60%>
+                <TR>
+                    <!-- <td>{{myFilter.form.as_p}}</td> -->
+
+                    <td><label>GifA:</label>{{ myFilter.form.GifA }}</td>
+                    <td><label>Sample reference blank:</label>{{ myFilter.form.sample_reference_blank }}</td>
+                    <td><label>User sample description:</label>{{ myFilter.form.user_sample_description }}</td>
+                    <td><label>Submitter 1:</label>{{ myFilter.form.submitter_1_id }}</td>
+                    <td><label>Submitter 2:</label>{{ myFilter.form.submitter_2_id }}</td>
+                    <td><label>Submitter id:</label>{{ myFilter.form.submitter }}</td>
+                    <td><label>Project:</label>{{ myFilter.form.project_id }}</td>
+                    <td><label>Date inf à:</label>{{ myFilter.form.date_inf }}</td>
+
+                </TR>
+                <TR>
+
+                    <td><label>Date sup à :</label>{{ myFilter.form.date_sup }}</td>
+                    <td><label>Research thematic:</label>{{ myFilter.form.research_thematic }}</td>
+                    <td><label>Link comment:</label>{{ myFilter.form.link_comment }}</td>
+                    <td><label>Profile core name:</label>{{ myFilter.form.profile_core_name }}</td>
+                    <td><label>Cruise name:</label>{{ myFilter.form.cruise_name }}</td>
+                    <td><label>Country:</label>{{ myFilter.form.country }}</td>
+                    <td><label>Institution name:</label>{{ myFilter.form.institution_name }}</td>
+                    <td><label>Sample type:</label>{{ myFilter.form.sample_type }}</td>
+                </TR>
+                <TR>
+                    <td><label>Sample fraction analysed:</label>{{ myFilter.form.sample_fraction_analysed }}</td>
+                    <td><label>Nature fraction be analyse:</label>{{ myFilter.form.nature_fraction_be_analyse }}</td>
+                    <td><label>Longitude min:</label>{{ myFilter.form.longitude_min }}</td>
+                    <td><label>Longitude min:</label>{{ myFilter.form.longitude_min }}</td>
+                    <td><label>Latitude min:</label>{{ myFilter.form.latitude_min }}</td>
+                    <td><label>Latitude max:</label>{{ myFilter.form.longitude_max }}</td>
+                </TR>
+
+
+            </TABLE>
+
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button style="float:right;" class="btn btn-primary" type="submit" value="Export" name="Export">
+                    Export
+                </button>
+            {% if user.is_superuser %}
+                <a style="float:right; position: relative; left: -10%;" class="btn btn-primary" href="{% url 'uploadsample' %}"> Import </a>
+            {% endif %}
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>GifA</th>
+                    <th>User sample description</th>
+                    <th>Submitter 1</th>
+                    <th>Submitter 2</th>
+                    <th>Project</th>
+                    <th>LSCE Contact</th>
+                    <th>Research thematic</th>
+                    <th>Profile/core name</th>
+                    <th>ocean/sea</th>
+                    <th>Country</th>
+                    <th>Site name</th>
+                    <th>Experiment type</th>
+                    <th>Sampling depth (cm)</th>
+                    <th>Institution name</th>
+                    <th>Sample's type</th>
+                    <th>Sample fraction to be analysed</th>
+                    {% if user.is_superuser %}
+
+                    <th>Edit</th>
+                    <th>Delete</th>
+{% endif %}
+                </tr>
+                {% for sample in samples %}
+                <tr>
+                    <td>{{sample.GifA}}</td>
+                    <td width="90%">{{sample.user_sample_description}}</td>
+                    <td width="90%">{{sample.submitter_1_id}}</td>
+                    <td width="90%">{{sample.submitter_2_id}}</td>
+                    <td width="90%">{{sample.project_id}}</td>
+                    <td width="90%">{{sample.contact_lsce}}</td>
+                    <td width="90%">{{sample.research_thematic}}</td>
+                    <td width="90%">{{sample.profile_core_name}}</td>
+                    <td width="90%">{{sample.ocean_sea}}</td>
+
+                    <td width="90%">{{sample.country}}</td>
+                    <td width="90%">{{sample.site_name}}</td>
+                    <td width="90%">{{sample.experiment_type}}</td>
+                    <td width="90%">{{sample.sampling_depth}}</td>
+                    <td width="90%">{{sample.institution_name}}</td>
+                    <td width="90%">{{sample.sample_type}}</td>
+                    <td width="90%">{{sample.sample_fraction_analysed}}</td>
+                    {% if user.is_superuser %}
+                    <td><a class='btn btn-sm btn-info' href="{% url 'modifier_sample' sample.GifA %}"> edit </a></td>
+                    <td>
+                    <form action="{% url 'supprimer_sample' sample.GifA %}" method="post">
+                      {% csrf_token %}
+                      <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+                    </form>
+                    </td>
+                     {% endif %}
+                </tr>
+                {% endfor%}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<style>
+
+
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: .8rem;
+}
+
+
+.contenu {
+   width:1000px;
+   background: #008000;
+   margin:auto;
+   margin-top: 1em;
+   text-align: center;
+   color : white;
+}
+
+</style>
+
+
+{% endblock %}

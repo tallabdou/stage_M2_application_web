@@ -1,0 +1,36 @@
+{% extends 'main.html' %}
+
+
+{% block contenu %}
+
+
+<div class="contenu">Sample prep</div>
+
+<br>
+<br>
+
+<div class="container">
+    <div class="col">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form2}}
+            <th><input type="submit" class="btn btn-primary mb-2" style="float: right;" name="Save"></th>
+        </form>
+    </div>
+</div>
+
+
+
+<style>
+.contenu {
+   width:1000px;
+   background: #008000;
+   margin:auto;
+   margin-top: 1em;
+   text-align: center;
+   color : white;
+}
+
+
+</style>
+{% endblock %}

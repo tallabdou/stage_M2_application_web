@@ -1,0 +1,106 @@
+{% extends 'main.html' %}
+
+{% block contenu %}
+
+<div class="contenu">Prep step</div>
+
+{% if user.is_superuser %}
+<br>
+<div class="col-md">
+    <div class="card card-body">
+        <a class="btn btn-outline-primary  btn-sm btn-block" href="{% url 'ajouter_prep_step' %}">Add Prep step</a>
+    </div>
+</div>
+{% endif %}
+<br>
+<div class="row">
+    <div class="col">
+        <div class="card card-body">
+
+            <form method="get">
+                {{myFilter.form}}
+                <button class="btn btn-primary" type="submit">Search</button>
+                <button style="float:right;" class="btn btn-outline-primary" type="submit" value="Export" name="Export">
+                    Export
+                </button>
+  {% if user.is_superuser %}
+                <a style="float:right; position: relative; left: -10%;" class="btn btn-primary" href="{% url 'uploadprep_step' %}"> Import </a>
+                  {% endif %}
+            </form>
+
+        </div>
+    </div>
+
+</div>
+<br>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <table class="table table-sm">
+                <tr>
+                    <th>Work station</th>
+                    <th>Sequence</th>
+                    <th>Operator</th>
+                    <th>Ending date</th>
+                      {% if user.is_superuser %}
+                    <th> Edit</th>
+                    <th>Delete</th>
+                  {% endif %}
+                </tr>
+                {% for prep_step in prep_steps %}
+                <tr>
+                    <td>{{prep_step.work_station}}</td>
+                    <td>{{prep_step.sequence}}</td>
+                    <td>{{prep_step.operator}}</td>
+                    <td>{{prep_step.ending_date}}</td>
+                    {% if user.is_superuser %}
+                    <td><a class='btn btn-sm btn-info' href="{% url 'modifier_prep_step' prep_step.id %}"> edit </a>
+                    <td>
+                        <form action="{% url 'supprimer_prep_step' prep_step.id %}" method="post">
+                          {% csrf_token %}
+                          <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+                    {% endif%}
+                </tr>
+                {% endfor%}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<style>
+
+.contenu {
+   width:1000px;
+   background: #008000;
+   margin:auto;
+   margin-top: 1em;
+   text-align: center;
+   color : white;
+}
+
+
+
+td,
+th {
+    border: 1px solid rgb(190, 190, 190);
+    padding: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: .8rem;
+}
+
+
+</style>
+
+
+{% endblock %}
